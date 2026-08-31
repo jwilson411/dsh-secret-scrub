@@ -1,0 +1,56 @@
+{
+  "name": "dsh-secret-scrub",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness plugin: redacts known secret shapes in tool arguments and results behind stable placeholders, and appends preimage-free JSONL incidents",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./scrub": "./src/scrub.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "cordis.patch.yml",
+    "LICENSE",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwilson411/dsh-secret-scrub.git"
+  },
+  "homepage": "https://github.com/jwilson411/dsh-secret-scrub#readme",
+  "bugs": {
+    "url": "https://github.com/jwilson411/dsh-secret-scrub/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "plugin",
+    "secrets",
+    "redaction",
+    "security"
+  ],
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-tools": "^0.1.1-rc.2"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-tools": "0.1.1-rc.2"
+  }
+}

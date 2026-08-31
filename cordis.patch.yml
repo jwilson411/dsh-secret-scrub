@@ -1,0 +1,37 @@
+# The dsh-secret-scrub bundle patch.
+#
+# `dsh plugin --profile <name> add …` installs this package into the profile,
+# sees the `dsh.bundle.patch` field in its package.json, and appends the
+# package to the profile manifest's ordered `dsh.profile.bundles` list. This
+# file is then composed as one layer over the bundles below it (dsh-base and
+# the mode bundle) and under the profile's own cordis.patch.yml.
+#
+# One insert, one row: the secret redactor. A later layer — the profile's
+# cordis.patch.yml or a `--patch` overlay — addresses the row by its `id` to
+# point the incident log somewhere this deployment actually collects. Note that
+# an id-targeted patch replaces the row's whole `config` rather than merging
+# into it, so an override must restate every field it means to keep.
+#
+# config:
+#   incidentLog  path of the append-only JSONL incident log. Each line names a
+#                timestamp, the scrub session, the tool, the pattern that
+#                matched, and the placeholder that replaced the match. It never
+#                holds the matched bytes, so the log is a record of what was
+#                redacted and not a copy of it. Relative paths resolve against
+#                the process working directory, and the file is created 0600.
+#                Default: `.dsh-secret-scrub.jsonl`.
+#                (Env fallback, used only if this key is absent:
+#                DSH_SECRET_SCRUB_LOG.)
+#
+# The row below configures nothing on purpose: with the key absent the
+# environment fallback still applies, and a profile that wants the log written
+# somewhere durable says so in its own layer:
+#
+#   - id: secret-scrub
+#     config:
+#       incidentLog: /var/log/dsh/secret-scrub.jsonl
+
+- insert:
+    - id: secret-scrub
+      name: dsh-secret-scrub
+      config: {}
